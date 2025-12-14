@@ -11,6 +11,7 @@ namespace DungeonSlime
         private static readonly int WindowWidth = 1280;
         private static readonly int WindowHeight = 720;
         private static readonly bool FullscreenDefault = false;
+        private Texture2D _logo;
 
         //Core systems
         public DungeonSlimeGame() : base(GameTitle, WindowWidth, WindowHeight, FullscreenDefault)
@@ -32,6 +33,7 @@ namespace DungeonSlime
         protected override void LoadContent()
         {
             // TODO: use this.Content to load your game content here
+            _logo = Content.Load<Texture2D>("images/logo");
             base.LoadContent();
         }
 
@@ -47,7 +49,10 @@ namespace DungeonSlime
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Yellow);
+            GraphicsDevice.Clear(Color.DeepSkyBlue);
+            SpriteBatch.Begin();
+            SpriteBatch.Draw(_logo, Vector2.Zero, Color.White);
+            SpriteBatch.End();
 
             // TODO: Add your drawing code here
 

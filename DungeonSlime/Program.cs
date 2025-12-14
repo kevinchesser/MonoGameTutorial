@@ -1,4 +1,4 @@
 ﻿using DungeonSlime;
 
-using Game1 game = new Game1();
+using DungeonSlimeGame game = new DungeonSlimeGame();
 game.Run();
