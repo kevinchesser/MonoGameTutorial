@@ -5,7 +5,7 @@ using MonoGameLibrary;
 
 namespace DungeonSlime
 {
-    public class Game1 : Core
+    public class DungeonSlimeGame : Core
     {
         private static readonly string GameTitle = "Dungeon Slime";
         private static readonly int WindowWidth = 1280;
@@ -13,7 +13,7 @@ namespace DungeonSlime
         private static readonly bool FullscreenDefault = false;
 
         //Core systems
-        public Game1() : base(GameTitle, WindowWidth, WindowHeight, FullscreenDefault)
+        public DungeonSlimeGame() : base(GameTitle, WindowWidth, WindowHeight, FullscreenDefault)
         {
 
         }
