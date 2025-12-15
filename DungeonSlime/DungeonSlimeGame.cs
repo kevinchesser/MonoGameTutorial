@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Numerics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Input;
@@ -32,6 +32,12 @@ namespace DungeonSlime
 
         // Defines the bounds of the room that the slime and bat are contained within.
         private Rectangle _roomBounds;
+
+        // The sound effect to play when the bat bounces off the edge of the screen.
+        private SoundEffectInstance _bounceSoundEffect;
+
+        // The sound effect to play when the slime eats a bat.
+        private SoundEffectInstance _collectSoundEffect;
 
         //Core systems
         public DungeonSlimeGame() : base(GameTitle, WindowWidth, WindowHeight, FullscreenDefault)
@@ -79,6 +85,32 @@ namespace DungeonSlime
             // Create the tilemap from the XML configuration file.
             _tilemap = Tilemap.FromFile(Content, "images/tilemap-definition.xml");
             _tilemap.Scale = new Vector2(4.0f, 4.0f);
+
+            // Load the bounce sound effect
+            SoundEffect bounceSoundEffect = Content.Load<SoundEffect>("audio/bounce");
+            _bounceSoundEffect = bounceSoundEffect.CreateInstance();
+            _bounceSoundEffect.Volume = 0.05f;
+
+            // Load the collect sound effect
+            SoundEffect collectSoundEffect = Content.Load<SoundEffect>("audio/collect");
+            _collectSoundEffect = collectSoundEffect.CreateInstance();
+            _collectSoundEffect.Volume = 0.05f;
+
+            // Load the background theme music
+            Song theme = Content.Load<Song>("audio/theme");
+
+            // Ensure media player is not already playing on device, if so, stop it
+            if(MediaPlayer.State == MediaState.Playing)
+            {
+                MediaPlayer.Stop();
+            }
+
+            // Play the background theme music.
+            MediaPlayer.Play(theme);
+            MediaPlayer.Volume = 0.05f;
+
+            // Set the theme music to repeat.
+            MediaPlayer.IsRepeating = true;
         }
 
         protected override void Update(GameTime gameTime)
@@ -167,6 +199,9 @@ namespace DungeonSlime
             {
                 normal.Normalize();
                 _batVelocity = Vector2.Reflect(_batVelocity, normal);
+
+                // Play the bounce sound effect
+                _bounceSoundEffect.Play();
             }
 
             _batPosition = newBatPosition;
@@ -183,6 +218,9 @@ namespace DungeonSlime
 
                 // Assign a new random velocity to the bat
                 AssignRandomBatVelocity();
+
+                // Play the collect sound effect
+                _collectSoundEffect.Play();
             }
 
             base.Update(gameTime);
