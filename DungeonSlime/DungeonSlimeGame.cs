@@ -14,8 +14,8 @@ namespace DungeonSlime
         private static readonly int WindowWidth = 1280;
         private static readonly int WindowHeight = 720;
         private static readonly bool FullscreenDefault = false;
-        private Sprite _slime;
-        private Sprite _bat;
+        private AnimatedSprite _slime;
+        private AnimatedSprite _bat;
 
         //Core systems
         public DungeonSlimeGame() : base(GameTitle, WindowWidth, WindowHeight, FullscreenDefault)
@@ -39,9 +39,9 @@ namespace DungeonSlime
             //Create texture atlas from xml config
             TextureAtlas textureAtlas = TextureAtlas.FromFile(Content, "images/atlas-definition.xml");
 
-            _slime = textureAtlas.CreateSprite("slime");
+            _slime = textureAtlas.CreateAnimatedSprite("slime-animation");
             _slime.Scale = new Vector2(4.0f, 4.0f);
-            _bat = textureAtlas.CreateSprite("bat");
+            _bat = textureAtlas.CreateAnimatedSprite("bat-animation");
             _bat.Scale = new Vector2(4.0f, 4.0f);
             base.LoadContent();
         }
@@ -50,6 +50,8 @@ namespace DungeonSlime
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            _slime.Update(gameTime);
+            _bat.Update(gameTime);
 
             // TODO: Add your update logic here
 
