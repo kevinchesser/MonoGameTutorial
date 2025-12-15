@@ -124,5 +124,11 @@ namespace MonoGameLibrary.Graphics
                 }
             }
         }
+
+        public Sprite CreateSprite(string regionName)
+        {
+            TextureRegion region = GetRegion(regionName);
+            return new Sprite(region);
+        }
     }
 }

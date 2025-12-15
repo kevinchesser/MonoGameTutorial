@@ -14,8 +14,8 @@ namespace DungeonSlime
         private static readonly int WindowWidth = 1280;
         private static readonly int WindowHeight = 720;
         private static readonly bool FullscreenDefault = false;
-        private TextureRegion _slime;
-        private TextureRegion _bat;
+        private Sprite _slime;
+        private Sprite _bat;
 
         //Core systems
         public DungeonSlimeGame() : base(GameTitle, WindowWidth, WindowHeight, FullscreenDefault)
@@ -36,10 +36,13 @@ namespace DungeonSlime
         //Anything dependant on content being loaded here should happen after base.Initialize()
         protected override void LoadContent()
         {
-            // TODO: use this.Content to load your game content here
+            //Create texture atlas from xml config
             TextureAtlas textureAtlas = TextureAtlas.FromFile(Content, "images/atlas-definition.xml");
-            _slime = textureAtlas.GetRegion("slime");
-            _bat = textureAtlas.GetRegion("bat");
+
+            _slime = textureAtlas.CreateSprite("slime");
+            _slime.Scale = new Vector2(4.0f, 4.0f);
+            _bat = textureAtlas.CreateSprite("bat");
+            _bat.Scale = new Vector2(4.0f, 4.0f);
             base.LoadContent();
         }
 
@@ -59,11 +62,11 @@ namespace DungeonSlime
 
             SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            // Draw the slime texture region at a scale of 4.0
-            _slime.Draw(SpriteBatch, Vector2.Zero, Color.White, 0.0f, Vector2.One, 4.0f, SpriteEffects.None, 0.0f);
+            //Draw slime sprite
+            _slime.Draw(SpriteBatch, Vector2.Zero);
 
-            // Draw the bat texture region 10px to the right of the slime at a scale of 4.0
-            _bat.Draw(SpriteBatch, new Vector2(_slime.Width * 4.0f + 10, 0), Color.White, 0.0f, Vector2.One, 4.0f, SpriteEffects.None, 1.0f);
+            //Draw bat sprite to the right of the slime
+            _bat.Draw(SpriteBatch, new Vector2(_slime.Width + 10, 0));
 
             SpriteBatch.End();
 
